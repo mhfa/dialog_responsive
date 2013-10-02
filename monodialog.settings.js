@@ -18,31 +18,28 @@
         //fluid: true, //new option
         resizable: false,
         draggable: false,
-        open: function(event, ui){ setDialogSize('open'); }, // needed when autoOpen is set to true in this codepen
+        open: function(event, ui){ setDialogSize(); }, // needed when autoOpen is set to true in this codepen
       });
     }
   });
 
   // on window resize run function
   $(window).resize(function () {
-    setDialogSize('resize');
+    setDialogSize();
   });
 
   /**
    * Set the dialog size (based on window size) when opening dialog.
    */
   $(document).on("dialogopen", ".ui-dialog", function (event, ui) {
-    setDialogSize('open');
+    setDialogSize();
   });
 
   /**
    * Set the dialog size based on window size.
    */
   var distanceFromTop = 0;
-  function setDialogSize(action) {
-
-
-
+  function setDialogSize() {
     var $visible = $(".ui-dialog:visible");
     // each open dialog
     $visible.each(function () {
@@ -63,17 +60,13 @@
       dialog.option("position", dialog.options.position);
 
       // set distanceFromTop for use in dialogScrollDown and dialogScrollUp
-      action = typeof action !== 'undefined' ? action : 'open';
-      if (action == 'open') {
-        // reset each time.
-        distanceFromTop = 0;
-
-        var offset = $this.offset();
-        distanceFromTop = offset.top;
-        if (distanceFromTop < 20) {
-          distanceFromTop = 20;
-        }
+      distanceFromTop = 0; // reset each time.
+      var offset = $this.offset();
+      distanceFromTop = offset.top;
+      if (distanceFromTop < 20) {
+        distanceFromTop = 20;
       }
+
     });
   }
 
@@ -103,11 +96,6 @@
    * Keeps top of dialof within 30px of bit of viewport.
    */
   function dialogScrollDown() {
-
-    // if (distanceFromTop < 20) {
-    //   distanceFromTop = 20;
-    // }
-
     var $visible = $(".ui-dialog:visible");
     // each open dialog
     $visible.each(function () {
